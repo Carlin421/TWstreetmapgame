@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # 1. 初始化 Firebase Admin
-cred = credentials.Certificate("guess_game/streetmap-2c88d-firebase-adminsdk-fbsvc-66f551ad2f.json")  
+cred = credentials.Certificate("/etc/secrets/streetmap-2c88d-firebase-adminsdk-fbsvc-66f551ad2f.json")  
 firebase_admin.initialize_app(cred, {
     "storageBucket": "streetmap-2c88d.firebasestorage.app"  # 修改為你的 bucket 名稱
 })
