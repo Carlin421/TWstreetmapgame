@@ -4,26 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Guess the Location</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- 必須先載入 media-chrome 套件 -->
+
+  <!-- 載入 Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- 載入自訂的 main.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <!-- media-chrome 套件（播放器） -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/+esm"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/menu/+esm"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome/media-theme-element/+esm"></script>
 
-  <!-- 這段 template 即為「Notflix」風格的播放器樣式 -->
+  <!-- Notflix Player Template (Web Component) -->
+  <!-- 注意：這裡的 <style> 盡量保留在 template 中，避免影響 Web Component 的運作 -->
   <template id="media-theme-notflix">
     <style>
-      #map { height: 400px; width: 100%; }
-        #map-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.9);
-            z-index: 1000;
-        }
       :host {
         --_primary-color: var(--media-primary-color, #fff);
         --_secondary-color: rgb(0 0 0 / 0.75);
@@ -88,7 +87,6 @@
         width: 100%;
         height: 100%;
       }
-
       media-time-range:hover {
         --media-range-track-height: 0.4em;
       }
@@ -97,12 +95,10 @@
         --media-button-icon-transition: transform 0.2s ease;
         padding: 0 0.4em;
       }
-
       media-control-bar *:hover {
         --media-button-icon-transform: scale(1.3);
         --media-button-icon-transition: transform 0.15s;
       }
-
       [role='button'] {
         --media-button-icon-height: 2em;
         padding: 1.5em 0.9em;
@@ -116,7 +112,6 @@
         justify-content: space-around;
         overflow: hidden;
       }
-
       media-controller[breakpointmd] .control-bar-title {
         width: auto;
         padding-right: 15%;
@@ -125,7 +120,6 @@
       .media-volume-wrapper {
         position: relative;
       }
-
       .media-volume-range-wrapper {
         overflow: hidden;
         opacity: 0;
@@ -137,7 +131,6 @@
         top: 0.7em;
         left: 0.5em;
       }
-
       media-mute-button:hover + .media-volume-range-wrapper,
       media-mute-button:focus + .media-volume-range-wrapper,
       media-mute-button:focus-within + .media-volume-range-wrapper,
@@ -162,7 +155,6 @@
       media-captions-menu-button svg {
         translate: 0 3%;
       }
-
       [role='menu'] {
         --media-control-background: var(--_panel-background);
         --media-font-size: 1.2em;
@@ -170,12 +162,10 @@
         right: 10px;
         border-radius: 2px;
       }
-
       [breakpointmd] [role='menu'] {
         margin-bottom: 25px;
         right: 15px;
       }
-
       [role='menu'] [slot='header'] {
         padding: 0.4em 2em 0 1em;
         font-weight: 500;
@@ -184,14 +174,12 @@
         line-height: 1.5;
         border: none;
       }
-
       [role='menu']::part(menu-item) {
         padding: 0.2em 2em 0.2em 1em;
         font-size: 1em;
         line-height: 1.7;
         color: rgb(179 179 179);
       }
-
       [role='menu']::part(menu-item checked) {
         color: white;
       }
@@ -230,6 +218,7 @@
             ></path>
           </svg>
         </media-play-button>
+
         <media-seek-backward-button seekoffset="10">
           <svg aria-hidden="true" slot="icon" fill="none" role="img" viewBox="0 0 24 24">
             <path
@@ -239,6 +228,7 @@
             ></path>
           </svg>
         </media-seek-backward-button>
+
         <media-seek-forward-button seekoffset="10">
           <svg aria-hidden="true" slot="icon" role="img" viewBox="0 0 24 24">
             <path
@@ -249,217 +239,146 @@
             ></path>
           </svg>
         </media-seek-forward-button>
+
         <div class="media-volume-wrapper">
           <media-mute-button>
-            <svg aria-hidden="true" slot="high" fill="none" role="img" viewBox="0 0 24 24">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M24 12C24 8.28693 22.525 4.72597 19.8995 2.10046L18.4853 3.51468C20.7357 5.76511 22 8.81736 22 12C22 15.1826 20.7357 18.2348 18.4853 20.4852L19.8995 21.8995C22.525 19.2739 24 15.713 24 12ZM11 3.99995C11 3.59549 10.7564 3.23085 10.3827 3.07607C10.009 2.92129 9.57889 3.00685 9.29289 3.29285L4.58579 7.99995H1C0.447715 7.99995 0 8.44767 0 8.99995V15C0 15.5522 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0786 10.3827 20.9238C10.7564 20.7691 11 20.4044 11 20V3.99995ZM5.70711 9.70706L9 6.41417V17.5857L5.70711 14.2928L5.41421 14H5H2V9.99995H5H5.41421L5.70711 9.70706ZM16.0001 12C16.0001 10.4087 15.368 8.88254 14.2428 7.75732L12.8285 9.17154C13.5787 9.92168 14.0001 10.9391 14.0001 12C14.0001 13.0608 13.5787 14.0782 12.8285 14.8284L14.2428 16.2426C15.368 15.1174 16.0001 13.5913 16.0001 12ZM17.0709 4.92889C18.9462 6.80426 19.9998 9.3478 19.9998 12C19.9998 14.6521 18.9462 17.1957 17.0709 19.071L15.6567 17.6568C17.157 16.1565 17.9998 14.1217 17.9998 12C17.9998 9.87823 17.157 7.8434 15.6567 6.34311L17.0709 4.92889Z"
-              ></path>
-            </svg>
-            <svg aria-hidden="true" slot="medium" role="img" viewBox="0 0 24 24">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11 4.00003C11 3.59557 10.7564 3.23093 10.3827 3.07615C10.009 2.92137 9.57889 3.00692 9.29289 3.29292L4.58579 8.00003H1C0.447715 8.00003 0 8.44774 0 9.00003V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4.00003ZM5.70711 9.70714L9 6.41424V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70714ZM17.0709 4.92897C18.9462 6.80433 19.9998 9.34787 19.9998 12C19.9998 14.6522 18.9462 17.1957 17.0709 19.0711L15.6567 17.6569C17.157 16.1566 17.9998 14.1218 17.9998 12C17.9998 9.87831 17.157 7.84347 15.6567 6.34318L17.0709 4.92897ZM14.2428 7.7574C15.368 8.88262 16.0001 10.4087 16.0001 12C16.0001 13.5913 15.368 15.1175 14.2428 16.2427L12.8285 14.8285C13.5787 14.0783 14.0001 13.0609 14.0001 12C14.0001 10.9392 13.5787 9.92176 12.8285 9.17161L14.2428 7.7574Z"
-              ></path>
-            </svg>
-            <svg aria-hidden="true" slot="low" role="img" viewBox="0 0 24 24">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11 4.00003C11 3.59557 10.7564 3.23093 10.3827 3.07615C10.009 2.92137 9.57889 3.00692 9.29289 3.29292L4.58579 8.00003H1C0.447715 8.00003 0 8.44774 0 9.00003V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4.00003ZM5.70711 9.70714L9 6.41424V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70714ZM16.0001 12C16.0001 10.4087 15.368 8.88262 14.2428 7.7574L12.8285 9.17161C13.5787 9.92176 14.0001 10.9392 14.0001 12C14.0001 13.0609 13.5787 14.0783 12.8285 14.8285L14.2428 16.2427C15.368 15.1175 16.0001 13.5913 16.0001 12Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-            <svg aria-hidden="true" slot="off" role="img" viewBox="0 0 24 24">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11 4.00003C11 3.59557 10.7564 3.23093 10.3827 3.07615C10.009 2.92137 9.57889 3.00692 9.29289 3.29292L4.58579 8.00003H1C0.447715 8.00003 0 8.44774 0 9.00003V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4.00003ZM5.70711 9.70714L9 6.41424V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70714ZM15.2929 9.70714L17.5858 12L15.2929 14.2929L16.7071 15.7071L19 13.4142L21.2929 15.7071L22.7071 14.2929L20.4142 12L22.7071 9.70714L21.2929 8.29292L19 10.5858L16.7071 8.29292L15.2929 9.70714Z"
-              ></path>
-            </svg>
+            <!-- 各種音量等級的 icon (high / medium / low / off) -->
+            <svg aria-hidden="true" slot="high" ...></svg>
+            <svg aria-hidden="true" slot="medium" ...></svg>
+            <svg aria-hidden="true" slot="low" ...></svg>
+            <svg aria-hidden="true" slot="off" ...></svg>
           </media-mute-button>
           <div class="media-volume-range-wrapper">
             <media-volume-range></media-volume-range>
           </div>
         </div>
+
         <media-text-display class="control-bar-title">
           <slot name="title">
             <template if="mediatitle"> {{mediatitle}} </template>
           </slot>
         </media-text-display>
+
         <media-captions-menu-button>
-          <svg aria-hidden="true" slot="icon" role="img" viewBox="0 0 24 24">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M1 3C1 2.44772 1.44772 2 2 2H22C22.5523 2 23 2.44772 23 3V17C23 17.5523 22.5523 18 22 18H19V21C19 21.3688 18.797 21.7077 18.4719 21.8817C18.1467 22.0557 17.7522 22.0366 17.4453 21.8321L11.6972 18H2C1.44772 18 1 17.5523 1 17V3ZM3 4V16H12H12.3028L12.5547 16.1679L17 19.1315V17V16H18H21V4H3ZM10 9L5 9V7L10 7V9ZM19 11H14V13H19V11ZM12 13L5 13V11L12 11V13ZM19 7H12V9H19V7Z"
-            ></path>
-          </svg>
+          <svg aria-hidden="true" slot="icon" ...></svg>
         </media-captions-menu-button>
         <media-captions-menu anchor="auto" hidden>
           <div slot="header">Subtitles</div>
         </media-captions-menu>
+
         <media-fullscreen-button>
-          <svg aria-hidden="true" slot="enter" role="img" viewBox="0 0 24 24">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0 5C0 3.89543 0.895431 3 2 3H9V5H2V9H0V5ZM22 5H15V3H22C23.1046 3 24 3.89543 24 5V9H22V5ZM2 15V19H9V21H2C0.895431 21 0 20.1046 0 19V15H2ZM22 19V15H24V19C24 20.1046 23.1046 21 22 21H15V19H22Z"
-            ></path>
-          </svg>
-          <svg aria-hidden="true" slot="exit" role="img" viewBox="0 0 24 24">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M24 8H19V3H17V9V10H18H24V8ZM0 16H5V21H7V15V14H6H0V16ZM7 10H6H0V8H5V3H7V9V10ZM19 21V16H24V14H18H17V15V21H19Z"
-            ></path>
-          </svg>
+          <svg aria-hidden="true" slot="enter" ...></svg>
+          <svg aria-hidden="true" slot="exit" ...></svg>
         </media-fullscreen-button>
       </media-control-bar>
     </media-controller>
   </template>
 </head>
 <body>
-  <h1>Guess the Location!</h1>
-  
-  <div id="video-container" style="position: relative;">
-    <!-- 使用我們自訂的 Notflix 播放器樣式 -->
-    <media-theme template="media-theme-notflix">
-      <video
-        id="video-player"
-        slot="media"
-        playsinline
-        crossorigin
-      ></video>
-    </media-theme>
+  <!-- 主要容器 -->
+  <div class="container py-4 position-relative">
+    <h1 class="text-center">Guess the Location!</h1>
 
-    
-    <button id="open-map">打開地圖</button>
-    
-    <div id="map-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 1000;">
-      <div id="map" style="height: 80%; width: 100%;"></div>
-      <button id="close-map" style="position: absolute; top: 10px; right: 10px; z-index: 1001;">關閉地圖</button>
-      <form id="guess-form">
-        <label for="lat">Latitude:</label>
-        <input type="text" id="lat" name="lat" required />
-        <label for="lng">Longitude:</label>
-        <input type="text" id="lng" name="lng" required />
-        <button type="submit">Submit Guess</button>
-      </form>
+    <!-- 影片播放器區塊 -->
+    <div class="mb-3">
+      <!-- 使用我們自訂的 Notflix 播放器樣式 -->
+      <media-theme template="media-theme-notflix" id="video-container">
+        <video
+          id="video-player"
+          slot="media"
+          class="w-100 rounded border"
+          playsinline
+          crossorigin
+        ></video>
+      </media-theme>
     </div>
+
+    <!-- 「打開地圖」按鈕 -->
+    <div class="position-absolute top-0 end-0 mt-3 me-3" style="z-index: 2000;">
+      <button id="open-map" class="btn mario-blue fw-bold px-4 py-2 fs-5 shadow-lg">
+        我要解題！
+      </button>
     </div>
+
+    <!-- 地圖浮層 -->
+    <div id="map-overlay">
+      <div class="map-background"></div>
+      <div class="container h-100 d-flex flex-column justify-content-center">
+        <div class="row justify-content-center">
+          <div class="col-11 col-md-8 bg-white p-4 rounded shadow position-relative">
+            <div id="map" class="mb-3 border"></div>
+
+            <!-- 關閉地圖按鈕 -->
+            <button
+              id="close-map"
+              class="btn mario-red position-absolute fw-bold px-4 py-2 fs-5 shadow-lg"
+              style="top: 20px; right: 20px; z-index: 1001;"
+            >
+              關閉地圖
+            </button>
+
+            <!-- 猜測座標表單 -->
+            <form id="guess-form" class="row g-3">
+              <div class="col-md-6">
+                <label for="lat" class="form-label">Latitude</label>
+                <input
+                  type="text"
+                  id="lat"
+                  name="lat"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="lng" class="form-label">Longitude</label>
+                <input
+                  type="text"
+                  id="lng"
+                  name="lng"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="col-12 text-center">
+                <button type="submit" class="btn mario-green fw-bold px-5 py-2 fs-5 shadow-lg">
+                  我猜是這裡!
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      
+        <div id="result-overlay" class="result-overlay">
+          <div id="distance-result" class="distance-result"></div>
+        </div>
+    <button id="next-question" class="btn mario-blue fw-bold px-5 py-3 fs-4 shadow-lg mt-3" style="display: none;">
+      下一題
+    </button>
+    <div id="countdown" class="countdown-display mt-3 fs-2 fw-bold text-center"></div>
+  </div>
+</div>
+    </div>
+
     
+  </div>
 
-  <div id="result"></div>
+  <!-- 載入 Google Maps 並初始化地圖 
+       因為需要 callback=initMap，故 initMap() 需是全域可呼叫。
+  -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+    async
+    defer
+  ></script>
 
-  <script>
-      let map;
-      let marker;
-  
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 23.97, lng: 120.97},  // 台灣中心點
-          zoom: 7
-        });
-  
-        map.addListener('click', function(e) {
-          placeMarker(e.latLng);
-        });
-      }
-  
-      function placeMarker(latLng) {
-        if (marker) {
-          marker.setPosition(latLng);
-        } else {
-          marker = new google.maps.Marker({
-            position: latLng,
-            map: map
-          });
-        }
-        
-        document.getElementById('lat').value = latLng.lat();
-        document.getElementById('lng').value = latLng.lng();
-      }
-  
-      // 取得隨機影片
-      async function fetchRandomVideo() {
-        try {
-          const response = await fetch("/random_video");
-          if (response.ok) {
-            const data = await response.json();
-            document.getElementById("video-player").src = data.video_url;
-            document.getElementById("video-title").innerText = data.title; // 顯示標題
-            window.currentLat = data.lat; // 實際緯度
-            window.currentLng = data.lng; // 實際經度
-  
-            // 重置地圖和標記
-            if (marker) {
-              marker.setMap(null);
-            }
-            marker = null;
-            map.setCenter({lat: 23.97, lng: 120.97});
-            map.setZoom(7);
-          } else {
-            document.getElementById("game-container").innerHTML = "<p>No videos available!</p>";
-          }
-        } catch (error) {
-          console.error('Error in fetchRandomVideo:', error);
-        }
-      }
-  
-      // 表單送出事件
-      document.getElementById("guess-form").addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const guessedLat = parseFloat(document.getElementById("lat").value);
-        const guessedLng = parseFloat(document.getElementById("lng").value);
-        const actualLat = window.currentLat;
-        const actualLng = window.currentLng;
-  
-        // 使用 Haversine 公式計算距離（單位：公里）
-        const R = 6371; // 地球半徑（公里）
-        const dLat = (actualLat - guessedLat) * Math.PI / 180;
-        const dLon = (actualLng - guessedLng) * Math.PI / 180;
-        const a = 
-          Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(guessedLat * Math.PI / 180) * Math.cos(actualLat * Math.PI / 180) * 
-          Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        const distance = R * c;
-  
-        const resultDiv = document.getElementById("result");
-        if (distance < 10) {
-          resultDiv.innerHTML = `<p>太棒了！你的猜測非常接近。距離實際位置只有 ${distance.toFixed(2)} 公里。</p>`;
-        } else {
-          resultDiv.innerHTML = `<p>加油！你的猜測距離實際位置 ${distance.toFixed(2)} 公里。</p>`;
-        }
-  
-        // 在地圖上顯示實際位置
-        new google.maps.Marker({
-          position: {lat: actualLat, lng: actualLng},
-          map: map,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-        });
-  
-        // 延遲後換下一個影片
-        setTimeout(fetchRandomVideo, 5000);
-      });
-  
-      // 初始化遊戲
-      fetchRandomVideo();
-      document.getElementById("open-map").addEventListener("click", function() {
-      document.getElementById("map-overlay").style.display = "block";
-      // 確保地圖正確載入
-      google.maps.event.trigger(map, 'resize');
-    });
+  <!-- 載入 Bootstrap JS (選擇性) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
 
-    document.getElementById("close-map").addEventListener("click", function() {
-      document.getElementById("map-overlay").style.display = "none";
-    });
-  </script>
-  
-  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
-  </body>
-  </html>
+  <!-- 載入我們的 main.js -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
