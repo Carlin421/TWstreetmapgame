@@ -1,0 +1,18 @@
+<!-- 假設 templates/upload.html -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>影片上傳</title>
+</head>
+<body>
+  <form action="/upload_video" method="POST" enctype="multipart/form-data">
+    <label>選擇影片：<input type="file" name="video_file" accept="video/mp4"/></label><br/>
+    <label>地點經度：<input type="text" name="lng" required /></label><br/>
+    <label>地點緯度：<input type="text" name="lat" required /></label><br/>
+    <label>標題：<input type="text" name="title" /></label><br/>
+    <label>描述：<input type="text" name="description" /></label><br/>
+    <button type="submit">上傳</button>
+  </form>
+</body>
+</html>
